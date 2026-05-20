@@ -1,22 +1,18 @@
 import { expect, test } from "@playwright/test";
 
 const expansionRoutes = [
-  "/methodology",
-  "/methodology/atr-counts",
-  "/methodology/turning-movement-counts",
-  "/methodology/parking-utilization-survey",
-  "/methodology/license-plate-survey",
-  "/methodology/ball-bank-study",
-  "/methodology/travel-time-studies",
-  "/methodology/delay-studies",
-  "/methodology/radar-speed-study",
-  "/methodology/gap-study",
-  "/methodology/cordon-counts",
-  "/methodology/customized-data-collection",
-  "/resources",
-  "/resources/service-selection-guide",
-  "/resources/scheduling-and-duration-guide",
-  "/resources/deliverables-and-report-formats",
+  "/services",
+  "/services/atr-counts",
+  "/services/turning-movement-counts",
+  "/services/parking-utilization-survey",
+  "/services/license-plate-survey",
+  "/services/ball-bank-study",
+  "/services/travel-time-studies",
+  "/services/delay-studies",
+  "/services/radar-speed-study",
+  "/services/gap-study",
+  "/services/cordon-counts",
+  "/services/customized-data-collection",
 ] as const;
 
 test("all expansion routes resolve", async ({ page }) => {
@@ -27,33 +23,26 @@ test("all expansion routes resolve", async ({ page }) => {
   }
 });
 
-test("desktop nav shows Methodology and Resources with active state", async ({ page }) => {
-  await page.goto("/methodology");
+test("desktop nav shows Services with active state", async ({ page }) => {
+  await page.goto("/services");
   const desktopNav = page.getByRole("navigation", { name: "Primary" });
-  const methodologyLink = desktopNav.getByRole("link", { name: "Methodology" });
-  const resourcesLink = desktopNav.getByRole("link", { name: "Resources" });
+  const servicesLink = desktopNav.getByRole("link", { name: "Services" });
 
-  await expect(methodologyLink).toBeVisible();
-  await expect(resourcesLink).toBeVisible();
-  await expect(methodologyLink).toHaveClass(/after:scale-x-100/);
-
-  await page.goto("/resources");
-  await expect(resourcesLink).toHaveClass(/after:scale-x-100/);
+  await expect(servicesLink).toBeVisible();
+  await expect(servicesLink).toHaveClass(/after:scale-x-100/);
 });
 
-test("mobile nav includes Methodology and Resources", async ({ browser }) => {
+test("mobile nav includes Services", async ({ browser }) => {
   const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
   const page = await context.newPage();
 
-  await page.goto("/resources");
+  await page.goto("/services");
   await page.getByLabel("Toggle menu").click();
   const mobileNav = page.getByRole("navigation", { name: "Mobile Primary" });
-  const methodologyLink = mobileNav.getByRole("link", { name: "Methodology" });
-  const resourcesLink = mobileNav.getByRole("link", { name: "Resources" });
+  const servicesLink = mobileNav.getByRole("link", { name: "Services" });
 
-  await expect(methodologyLink).toBeVisible();
-  await expect(resourcesLink).toBeVisible();
-  await expect(resourcesLink).toHaveClass(/bg-sand/);
+  await expect(servicesLink).toBeVisible();
+  await expect(servicesLink).toHaveClass(/bg-sand/);
 
   await context.close();
 });

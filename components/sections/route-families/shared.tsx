@@ -1,15 +1,11 @@
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { OrnamentField } from "@/components/sections/ornament-field";
-import { PinnedMediaStack } from "@/components/sections/pinned-media-stack";
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/heading";
-import { interactiveSurfaceCard, surfacePanel } from "@/components/ui/patterns";
 import { Reveal } from "@/components/ui/reveal";
 import type { ResolvedRouteLayout } from "@/lib/layout-orchestration";
-import type { RouteMediaStory } from "@/lib/media-assets";
-import type { DetailSectionBlock, HeroBlock, ServiceGroupBlock } from "@/lib/types";
+import type { HeroBlock } from "@/lib/types";
 import type { ToneVariant } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
@@ -44,8 +40,8 @@ export function RouteHeader({
         placement={layout.motionConfig.assetPlacement}
         preset={layout.motionConfig.ornamentPreset}
       />
-      <div className={cn("relative z-10 mx-auto max-w-6xl", centered ? "text-center" : "")}>
-        <div className={cn("grid gap-10", sideContent ? "lg:grid-cols-[1.08fr_0.92fr] lg:items-end" : "")}>
+      <div className={cn("relative z-10 mx-auto max-w-6xl", centered ? "text-center" : "") }>
+        <div className={cn("grid gap-10", sideContent ? "lg:grid-cols-[1.08fr_0.92fr] lg:items-end" : "") }>
           <div>
             <Reveal>
               <p className={cn("font-ui text-xs font-semibold uppercase tracking-[0.16em]", tone.accentText, eyebrowClassName)}>
@@ -108,175 +104,6 @@ export function RouteHeader({
           </div>
 
           {sideContent ? <Reveal delay={0.14}>{sideContent}</Reveal> : null}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function MediaFallbackAbstract({ tone, layout }: { tone: ToneVariant; layout: ResolvedRouteLayout }) {
-  return (
-    <section className="relative px-5 py-16 sm:px-8 lg:px-10">
-      <OrnamentField
-        className="opacity-45"
-        motionPreset={layout.motionPreset}
-        placement={layout.motionConfig.assetPlacement}
-        preset={layout.motionConfig.ornamentPreset}
-      />
-      <div className="relative mx-auto max-w-6xl">
-        <div className={cn("rounded-3xl border p-10", tone.accentBorder, tone.accentSoftBg)}>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div className="h-16 rounded-xl border border-line/70 bg-paper/70" />
-            <div className="h-16 rounded-xl border border-line/70 bg-paper/70" />
-            <div className="h-16 rounded-xl border border-line/70 bg-paper/70" />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function renderMotionMedia(
-  layout: ResolvedRouteLayout,
-  tone: ToneVariant,
-  mediaStory: RouteMediaStory | null,
-  heading: string,
-  compact = false,
-) {
-  if (layout.mediaMode === "abstract") {
-    return <MediaFallbackAbstract layout={layout} tone={tone} />;
-  }
-
-  if (!mediaStory) {
-    return <MediaFallbackAbstract layout={layout} tone={tone} />;
-  }
-
-  return (
-    <PinnedMediaStack
-      className={compact ? "py-12" : undefined}
-      config={layout.motionConfig}
-      experienceKind={layout.experienceConfig.experienceKind}
-      heading={heading}
-      motionPreset={layout.motionPreset}
-      story={mediaStory}
-      tone={tone}
-      variantId={layout.experienceConfig.variantId}
-    />
-  );
-}
-
-export function ServiceGrid({
-  group,
-  tone,
-  variant,
-}: {
-  group: ServiceGroupBlock;
-  tone: ToneVariant;
-  variant: "counts" | "surveys" | "studies" | "services";
-}) {
-  if (variant === "studies") {
-    return (
-      <div className="mt-10 space-y-4">
-        {group.items.map((item, index) => (
-          <Reveal key={item.href} delay={index * 0.04}>
-            <Link
-              className={cn(
-                interactiveSurfaceCard({ density: "compact", lift: "sm" }),
-                "grid gap-3 sm:grid-cols-[90px_1fr]",
-                tone.accentBorder,
-              )}
-              href={item.href}
-            >
-              <p className={cn("font-ui text-xs font-semibold uppercase tracking-[0.13em]", tone.accentText)}>
-                Study {String(index + 1).padStart(2, "0")}
-              </p>
-              <div>
-                <p className="font-heading text-xl font-semibold text-ink transition group-hover:text-ink/90">{item.title}</p>
-                <p className="mt-2 text-sm leading-7 text-ink/72">{item.description}</p>
-              </div>
-            </Link>
-          </Reveal>
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <div
-      className={cn(
-        "mt-10 grid gap-4",
-        variant === "surveys"
-          ? "md:grid-cols-3"
-          : variant === "services"
-            ? "md:grid-cols-2"
-            : "md:grid-cols-2 xl:grid-cols-3",
-      )}
-    >
-      {group.items.map((item, index) => (
-        <Reveal key={item.href} delay={index * 0.05}>
-          <Link
-            className={cn(interactiveSurfaceCard({ lift: "md" }), "block h-full", tone.accentBorder)}
-            href={item.href}
-          >
-            <p className={cn("font-ui text-xs font-semibold uppercase tracking-[0.13em]", tone.accentText)}>
-              {variant === "surveys"
-                ? "Decision Path"
-                : variant === "services"
-                  ? "Service"
-                  : "Operational Item"}{" "}
-              {String(index + 1).padStart(2, "0")}
-            </p>
-            <p className="mt-3 font-heading text-xl font-semibold leading-snug text-ink">{item.title}</p>
-            <p className="mt-3 text-sm leading-7 text-ink/72">{item.description}</p>
-          </Link>
-        </Reveal>
-      ))}
-    </div>
-  );
-}
-
-export function DetailListPanel({
-  title,
-  items,
-  tone,
-}: {
-  title: string;
-  items: string[];
-  tone: ToneVariant;
-}) {
-  return (
-    <div className={cn(surfacePanel({ padding: "lg" }), tone.accentBorder)}>
-      <p className={cn("font-ui text-xs font-semibold uppercase tracking-[0.13em]", tone.accentText)}>{title}</p>
-      <ul className="mt-4 space-y-2.5">
-        {items.map((item) => (
-          <li key={item} className="flex items-start gap-3 text-sm leading-7 text-ink/75">
-            <span className={cn("mt-[0.58rem] inline-block h-1.5 w-1.5 shrink-0 rounded-full", tone.accentDot)} />
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-export function DetailFaqPanels({ detail, tone }: { detail: DetailSectionBlock; tone: ToneVariant }) {
-  return (
-    <section className="px-5 py-16 sm:px-8 lg:px-10">
-      <div className="mx-auto max-w-6xl">
-        <Reveal>
-          <Heading as="h3" className="text-[clamp(1.8rem,3.5vw,2.6rem)] font-extrabold leading-[1.06] tracking-[-0.03em]">
-            Frequently asked questions
-          </Heading>
-        </Reveal>
-        <div className="mt-7 grid gap-4 md:grid-cols-2">
-          {detail.faqs.map((faq, index) => (
-            <Reveal key={faq.question} delay={index * 0.04}>
-              <article className={cn(surfacePanel({ padding: "md" }), tone.accentBorder, "bg-paper")}>
-                <p className="font-ui text-sm font-semibold text-ink">{faq.question}</p>
-                <p className="mt-3 text-sm leading-7 text-ink/75">{faq.answer}</p>
-              </article>
-            </Reveal>
-          ))}
         </div>
       </div>
     </section>

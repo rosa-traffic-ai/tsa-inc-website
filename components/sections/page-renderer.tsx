@@ -7,7 +7,6 @@ import { HeroLines } from "@/components/sections/hero-lines";
 import { MarkdownSection } from "@/components/sections/markdown-section";
 import { RelatedLinks } from "@/components/sections/related-links";
 import { RouteFamilyLayouts } from "@/components/sections/route-family-layouts";
-import { ServiceListSection } from "@/components/sections/service-list-section";
 import { ServiceTabs } from "@/components/sections/service-tabs";
 import { ScrollMediaStory } from "@/components/sections/scroll-media-story";
 import { StatementBlock } from "@/components/sections/statement-block";
@@ -28,12 +27,7 @@ export function PageRenderer({ page }: PageRendererProps) {
       return null;
     }
 
-    const routeUsesMotionMedia = page.route === "/services" || page.route === "/contact-us";
-    const hubAssetBundleId = page.route === "/services" ? layout.experienceConfig.assetBundleId : undefined;
-    const mediaStory = routeUsesMotionMedia
-      ? getRouteMediaStory(page.route, layout.mediaSlot, hubAssetBundleId)
-      : null;
-    return <RouteFamilyLayouts layout={layout} mediaStory={mediaStory} page={page} />;
+    return <RouteFamilyLayouts layout={layout} page={page} />;
   }
 
   const servicesTitle = "Every service your project needs.";
@@ -49,7 +43,7 @@ export function PageRenderer({ page }: PageRendererProps) {
       {page.serviceGroups?.length
         ? page.meta.template === "home"
           ? <ServiceTabs groups={page.serviceGroups} title={servicesTitle} />
-          : <ServiceListSection groups={page.serviceGroups} title={servicesTitle} />
+          : null
         : null}
 
       {page.approach ? <ApproachSection approach={page.approach} /> : null}

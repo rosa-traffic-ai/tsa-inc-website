@@ -1,78 +1,31 @@
+import { ContactRouteLayout } from "@/components/sections/route-families/custom-contact-layouts";
 import {
-  CategoryCountsLayout,
-  CategoryStudiesLayout,
-  CategorySurveysLayout,
+  ServicesDetailLayout,
   ServicesHubLayout,
-} from "@/components/sections/route-families/category-layouts";
-import { ContactRouteLayout, CustomProgramLayout } from "@/components/sections/route-families/custom-contact-layouts";
-import { DetailCountsLayout, DetailStudiesLayout, DetailSurveysLayout } from "@/components/sections/route-families/detail-layouts";
-import {
-  MethodologyDetailLayout,
-  MethodologyHubLayout,
-  ResourcesDetailLayout,
-  ResourcesHubLayout,
-} from "@/components/sections/route-families/method-resource-layouts";
+} from "@/components/sections/route-families/services-layouts";
 import { toneVariants } from "@/lib/theme";
 import type { ResolvedRouteLayout } from "@/lib/layout-orchestration";
-import type { RouteMediaStory } from "@/lib/media-assets";
 import type { PageContent } from "@/lib/types";
 
 interface RouteFamilyLayoutsProps {
   page: PageContent;
   layout: ResolvedRouteLayout;
-  mediaStory: RouteMediaStory | null;
 }
 
-export function RouteFamilyLayouts({ page, layout, mediaStory }: RouteFamilyLayoutsProps) {
+export function RouteFamilyLayouts({ page, layout }: RouteFamilyLayoutsProps) {
   const tone = toneVariants[layout.tone];
 
   if (layout.family === "services_hub") {
-    return <ServicesHubLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
+    return <ServicesHubLayout layout={layout} page={page} tone={tone} />;
   }
 
-  if (layout.family === "category_counts") {
-    return <CategoryCountsLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
-  }
-
-  if (layout.family === "category_surveys") {
-    return <CategorySurveysLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
-  }
-
-  if (layout.family === "category_studies") {
-    return <CategoryStudiesLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
-  }
-
-  if (layout.family === "detail_counts") {
-    return <DetailCountsLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
-  }
-
-  if (layout.family === "detail_surveys") {
-    return <DetailSurveysLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
-  }
-
-  if (layout.family === "detail_studies") {
-    return <DetailStudiesLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
-  }
-
-  if (layout.family === "methodology_hub") {
-    return <MethodologyHubLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
-  }
-
-  if (layout.family === "methodology_detail") {
-    return <MethodologyDetailLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
-  }
-
-  if (layout.family === "resources_hub") {
-    return <ResourcesHubLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
-  }
-
-  if (layout.family === "resources_detail") {
-    return <ResourcesDetailLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
+  if (layout.family === "services_detail") {
+    return <ServicesDetailLayout layout={layout} page={page} tone={tone} />;
   }
 
   if (layout.family === "contact") {
-    return <ContactRouteLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
+    return <ContactRouteLayout layout={layout} page={page} tone={tone} />;
   }
 
-  return <CustomProgramLayout layout={layout} mediaStory={mediaStory} page={page} tone={tone} />;
+  return null;
 }

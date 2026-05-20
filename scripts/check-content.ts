@@ -5,60 +5,38 @@ import { getRouteMediaStory } from "../lib/media-assets";
 const requiredRoutes = [
   "/",
   "/services",
-  "/methodology",
-  "/resources",
-  "/services/counts",
-  "/services/surveys",
-  "/services/studies",
-  "/services/customized-data-collection",
   "/contact-us",
-  "/services/counts/intersection-turning-movement-counts",
-  "/services/counts/atr-volume-classification-loop-detector-and-road-tube-counts",
-  "/services/counts/pedestrian-counts",
-  "/services/surveys/license-plate-survey",
-  "/services/surveys/parking-occupancy-survey",
-  "/services/surveys/vehicle-occupancy-surveys",
-  "/services/studies/ball-bank-study",
-  "/services/studies/travel-time-studies",
-  "/services/studies/delay-studies",
-  "/services/studies/radar-speed-studies",
-  "/services/studies/cordon-counts",
-  "/services/studies/gap-study",
-  "/services/studies/gps-travel-runs",
-  "/methodology/atr-counts",
-  "/methodology/turning-movement-counts",
-  "/methodology/pedestrian-counts",
-  "/methodology/parking-utilization-survey",
-  "/methodology/license-plate-survey",
-  "/methodology/vehicle-occupancy-surveys",
-  "/methodology/ball-bank-study",
-  "/methodology/travel-time-studies",
-  "/methodology/gps-travel-runs",
-  "/methodology/delay-studies",
-  "/methodology/radar-speed-study",
-  "/methodology/gap-study",
-  "/methodology/cordon-counts",
-  "/methodology/customized-data-collection",
-  "/resources/service-selection-guide",
-  "/resources/scheduling-and-duration-guide",
-  "/resources/deliverables-and-report-formats",
+  "/services/atr-counts",
+  "/services/turning-movement-counts",
+  "/services/pedestrian-counts",
+  "/services/parking-utilization-survey",
+  "/services/license-plate-survey",
+  "/services/vehicle-occupancy-surveys",
+  "/services/ball-bank-study",
+  "/services/travel-time-studies",
+  "/services/gps-travel-runs",
+  "/services/delay-studies",
+  "/services/radar-speed-study",
+  "/services/gap-study",
+  "/services/cordon-counts",
+  "/services/customized-data-collection",
 ];
 
-const methodologyRoutes = [
-  "/methodology/atr-counts",
-  "/methodology/turning-movement-counts",
-  "/methodology/pedestrian-counts",
-  "/methodology/parking-utilization-survey",
-  "/methodology/license-plate-survey",
-  "/methodology/vehicle-occupancy-surveys",
-  "/methodology/ball-bank-study",
-  "/methodology/travel-time-studies",
-  "/methodology/gps-travel-runs",
-  "/methodology/delay-studies",
-  "/methodology/radar-speed-study",
-  "/methodology/gap-study",
-  "/methodology/cordon-counts",
-  "/methodology/customized-data-collection",
+const serviceDetailRoutes = [
+  "/services/atr-counts",
+  "/services/turning-movement-counts",
+  "/services/pedestrian-counts",
+  "/services/parking-utilization-survey",
+  "/services/license-plate-survey",
+  "/services/vehicle-occupancy-surveys",
+  "/services/ball-bank-study",
+  "/services/travel-time-studies",
+  "/services/gps-travel-runs",
+  "/services/delay-studies",
+  "/services/radar-speed-study",
+  "/services/gap-study",
+  "/services/cordon-counts",
+  "/services/customized-data-collection",
 ] as const;
 
 function isInternalLink(href: string) {
@@ -93,14 +71,6 @@ async function main() {
           errors.push(`Missing explicit routeMotionConfig entry: ${page.route}`);
         }
 
-        if (layout.mediaMode !== "abstract") {
-          const mediaStory = getRouteMediaStory(page.route, layout.mediaSlot, layout.experienceConfig.assetBundleId);
-          if (!mediaStory) {
-            errors.push(`Missing media story for route: ${page.route}`);
-          } else if (mediaStory.scenes.length < 2) {
-            errors.push(`Expected at least 2 media scenes on route: ${page.route}`);
-          }
-        }
       }
     }
 
@@ -134,16 +104,21 @@ async function main() {
       }
     }
 
-    if (methodologyRoutes.includes(page.route as (typeof methodologyRoutes)[number])) {
+    if (serviceDetailRoutes.includes(page.route as (typeof serviceDetailRoutes)[number])) {
       if (!page.methodProfile) {
-        errors.push(`Missing methodProfile block on methodology route: ${page.route}`);
+        errors.push(`Missing methodProfile block on service detail route: ${page.route}`);
       } else if (!routeSet.has(normalizeRoute(page.methodProfile.serviceHref))) {
-        errors.push(`Invalid methodology serviceHref on ${page.route}: ${page.methodProfile.serviceHref}`);
+        errors.push(`Invalid serviceHref on ${page.route}: ${page.methodProfile.serviceHref}`);
       }
     }
   }
 
-  const turningMethod = pages.find((page) => page.route === "/methodology/turning-movement-counts");
+  const homeStory = getRouteMediaStory("/");
+  if (!homeStory || homeStory.clips.length === 0) {
+    errors.push("Missing home media story clips on /.");
+  }
+
+  const turningMethod = pages.find((page) => page.route === "/services/turning-movement-counts");
   if (
     !turningMethod?.methodProfile?.durationRules.some(
       (rule) =>
@@ -152,25 +127,25 @@ async function main() {
         rule.includes("15:00-18:00"),
     )
   ) {
-    errors.push("Missing turning-movement peak window claim on /methodology/turning-movement-counts.");
+    errors.push("Missing turning-movement peak window claim on /services/turning-movement-counts.");
   }
 
-  const lprsMethod = pages.find((page) => page.route === "/methodology/license-plate-survey");
+  const lprsMethod = pages.find((page) => page.route === "/services/license-plate-survey");
   const lprsRules = [
     ...(lprsMethod?.methodProfile?.durationRules ?? []),
     ...(lprsMethod?.methodProfile?.standards ?? []),
   ];
   if (!lprsRules.some((rule) => rule.includes("95%"))) {
-    errors.push("Missing LPRS 95%+ accuracy claim on /methodology/license-plate-survey.");
+    errors.push("Missing LPRS 95%+ accuracy claim on /services/license-plate-survey.");
   }
 
-  const radarMethod = pages.find((page) => page.route === "/methodology/radar-speed-study");
+  const radarMethod = pages.find((page) => page.route === "/services/radar-speed-study");
   if (
     !radarMethod?.methodProfile?.durationRules.some((rule) =>
       /2\s*hours?.*200\s*vehicles.*whichever\s*comes\s*first/i.test(rule),
     )
   ) {
-    errors.push("Missing radar speed duration rule claim on /methodology/radar-speed-study.");
+    errors.push("Missing radar speed duration rule claim on /services/radar-speed-study.");
   }
 
   if (errors.length > 0) {

@@ -1,33 +1,9 @@
 export type PageTemplate = "home" | "category" | "detail" | "contact" | "custom";
-export type LayoutFamily =
-  | "services_hub"
-  | "category_counts"
-  | "category_surveys"
-  | "category_studies"
-  | "detail_counts"
-  | "detail_surveys"
-  | "detail_studies"
-  | "methodology_hub"
-  | "methodology_detail"
-  | "resources_hub"
-  | "resources_detail"
-  | "custom_program"
-  | "contact";
+export type LayoutFamily = "services_hub" | "services_detail" | "contact";
 export type LayoutTone = "clay" | "amber" | "teal" | "slate" | "indigo";
 export type MotionPreset = "bold" | "medium" | "reduced";
 export type MediaMode = "footage" | "abstract" | "hybrid";
-export type MediaExperienceKind =
-  | "legacy_home_story"
-  | "counts_lane_atlas"
-  | "surveys_decision_matrix"
-  | "studies_evidence_observatory"
-  | "detail_counts_stackdeck"
-  | "detail_surveys_ribbon_track"
-  | "detail_studies_lens_lab"
-  | "custom_program_flow_composer"
-  | "contact_intake_console";
-export type ChapterStyle = "linear" | "branched" | "stacked" | "carousel" | "timeline";
-export type RouteInteractionStyle = "chapter" | "compact" | "restrained" | "program";
+export type RouteInteractionStyle = "chapter" | "compact" | "restrained";
 export type OrnamentPreset =
   | "services_hub"
   | "counts_flow"
@@ -47,70 +23,6 @@ export interface RouteMotionConfig {
   assetPlacement: AssetPlacement;
   panelHeight: PanelHeight;
   scrubStrength: number;
-}
-
-export interface RouteExperienceConfig {
-  experienceKind: MediaExperienceKind;
-  chapterCount: number;
-  chapterStyle: ChapterStyle;
-  variantId: string;
-  assetBundleId: string;
-}
-
-export interface RouteChapterConfig {
-  labels: string[];
-  metricHints?: string[];
-}
-
-export interface MediaScene {
-  id: string;
-  title: string;
-  description: string;
-  clipIndex: number;
-  start: number;
-  end: number;
-  ornamentState: "origin" | "merge" | "distribute";
-  chapterLabel?: string;
-  impactMetric?: string;
-  metricHint?: string;
-  focusTag?: string;
-  overlayPreset?: "lanes" | "matrix" | "signal" | "stack" | "ribbon" | "lens" | "composer" | "console";
-  variantHint?: string;
-}
-
-export interface ScrollMediaClipContract {
-  id: string;
-  title: string;
-  description: string;
-  videoSrc: string;
-  posterSrc: string;
-}
-
-export interface RouteMediaStoryContract {
-  title: string;
-  intro: string;
-  clips: ScrollMediaClipContract[];
-  scenes: MediaScene[];
-}
-
-export interface ToneVariantContract {
-  accentText: string;
-  accentBorder: string;
-  accentSoftBg: string;
-  accentDot: string;
-  accentGradient: string;
-}
-
-export interface MediaExperienceProps {
-  route: string;
-  heading: string;
-  compact?: boolean;
-  story: RouteMediaStoryContract;
-  tone: ToneVariantContract;
-  motionPreset: MotionPreset;
-  motionConfig: RouteMotionConfig;
-  experienceConfig: RouteExperienceConfig;
-  chapterConfig: RouteChapterConfig;
 }
 
 export interface PageMeta {
@@ -216,24 +128,6 @@ export interface MethodProfileBlock {
   serviceHref: string;
 }
 
-export interface ResourceDecisionCard {
-  title: string;
-  description: string;
-  href?: string;
-}
-
-export interface ResourceComparisonRow {
-  topic: string;
-  guidance: string;
-}
-
-export interface ResourceGuideBlock {
-  purpose: string;
-  decisionCards: ResourceDecisionCard[];
-  comparisonRows: ResourceComparisonRow[];
-  nextActions: string[];
-}
-
 export interface ContactTopic {
   label: string;
   value: string;
@@ -261,7 +155,6 @@ export interface PageContent {
   layoutTone?: LayoutTone;
   motionPreset?: MotionPreset;
   mediaMode?: MediaMode;
-  mediaSlot?: string;
   hero?: HeroBlock;
   statement?: StatementBlock;
   metrics?: MetricItem[];
@@ -270,7 +163,6 @@ export interface PageContent {
   audiences?: AudienceBlock;
   detail?: DetailSectionBlock;
   methodProfile?: MethodProfileBlock;
-  resourceGuide?: ResourceGuideBlock;
   contact?: CTAFormBlock;
   relatedLinks?: CtaLink[];
   body?: string;

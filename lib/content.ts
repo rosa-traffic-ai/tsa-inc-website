@@ -53,7 +53,6 @@ export async function loadAllPages() {
         layoutTone: frontmatter.layoutTone,
         motionPreset: frontmatter.motionPreset,
         mediaMode: frontmatter.mediaMode,
-        mediaSlot: frontmatter.mediaSlot,
         hero: frontmatter.hero,
         statement: frontmatter.statement,
         metrics: frontmatter.metrics,
@@ -62,7 +61,6 @@ export async function loadAllPages() {
         audiences: frontmatter.audiences,
         detail: frontmatter.detail,
         methodProfile: frontmatter.methodProfile,
-        resourceGuide: frontmatter.resourceGuide,
         contact: frontmatter.contact,
         relatedLinks: frontmatter.relatedLinks,
         body: parsed.content.trim() || undefined,
@@ -97,8 +95,6 @@ export async function getNavItems() {
   const preferredOrder: Array<{ route: string; label: string }> = [
     { route: "/", label: "Home" },
     { route: "/services", label: "Services" },
-    { route: "/methodology", label: "Methodology" },
-    { route: "/resources", label: "Resources" },
     { route: "/contact-us", label: "Contact" },
   ];
 

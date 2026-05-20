@@ -12,8 +12,6 @@ export const motionEasing = {
   reveal: [0.16, 1, 0.3, 1] as const,
   standard: [0.22, 1, 0.36, 1] as const,
   loop: "easeInOut" as const,
-  gsapStandard: "power2.out",
-  gsapSoft: "sine.inOut",
 };
 
 export const motionDuration = {
@@ -45,29 +43,6 @@ export const scrollSpring = {
   default: { stiffness: 105, damping: 23, mass: 0.22 },
   homeReduced: { stiffness: 160, damping: 30 },
   homeDefault: { stiffness: 110, damping: 24, mass: 0.22 },
-} as const;
-
-export const scrollExperienceMotion = {
-  pin: {
-    topOffset: 104,
-    chapterDistance: 620,
-    compactDistance: 520,
-    restrainedDistance: 420,
-  },
-  scrub: {
-    medium: 0.48,
-    compact: 0.38,
-    restrained: 0.26,
-  },
-  snap: {
-    duration: 0.24,
-    ease: motionEasing.gsapSoft,
-  },
-  transitions: {
-    clipFade: 0.45,
-    chapterSwap: motionDuration.base,
-    badgeFade: motionDuration.fast,
-  },
 } as const;
 
 export function getMotionPresetTokens(preset: MotionPreset, reduceMotion: boolean): MotionPresetTokens {

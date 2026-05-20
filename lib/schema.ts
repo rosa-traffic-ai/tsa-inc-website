@@ -94,28 +94,6 @@ const methodProfileSchema = z.object({
   serviceHref: z.string().startsWith("/"),
 });
 
-const resourceGuideSchema = z.object({
-  purpose: z.string().min(1),
-  decisionCards: z
-    .array(
-      z.object({
-        title: z.string().min(1),
-        description: z.string().min(1),
-        href: z.string().startsWith("/").optional(),
-      }),
-    )
-    .min(1),
-  comparisonRows: z
-    .array(
-      z.object({
-        topic: z.string().min(1),
-        guidance: z.string().min(1),
-      }),
-    )
-    .min(1),
-  nextActions: z.array(z.string().min(1)).min(1),
-});
-
 const contactSchema = z.object({
   title: z.string().min(1),
   subtitle: z.string().min(1),
@@ -150,26 +128,11 @@ export const frontmatterSchema = z.object({
     template: z.enum(["home", "category", "detail", "contact", "custom"]),
   }),
   layoutFamily: z
-    .enum([
-      "services_hub",
-      "category_counts",
-      "category_surveys",
-      "category_studies",
-      "detail_counts",
-      "detail_surveys",
-      "detail_studies",
-      "methodology_hub",
-      "methodology_detail",
-      "resources_hub",
-      "resources_detail",
-      "custom_program",
-      "contact",
-    ])
+    .enum(["services_hub", "services_detail", "contact"])
     .optional(),
   layoutTone: z.enum(["clay", "amber", "teal", "slate", "indigo"]).optional(),
   motionPreset: z.enum(["bold", "medium", "reduced"]).optional(),
   mediaMode: z.enum(["footage", "abstract", "hybrid"]).optional(),
-  mediaSlot: z.string().min(1).optional(),
   hero: heroSchema.optional(),
   statement: z
     .object({
@@ -183,7 +146,6 @@ export const frontmatterSchema = z.object({
   audiences: audienceSchema.optional(),
   detail: detailSchema.optional(),
   methodProfile: methodProfileSchema.optional(),
-  resourceGuide: resourceGuideSchema.optional(),
   contact: contactSchema.optional(),
   relatedLinks: z.array(ctaLinkSchema).optional(),
 });
