@@ -4,7 +4,7 @@ Static, multipage marketing site for Traffic Survey Analysis Inc.
 
 ## Stack
 
-- Next.js (App Router, static export)
+- Next.js (App Router, deployed on Vercel)
 - TypeScript (strict)
 - Tailwind CSS
 - Framer Motion
@@ -18,13 +18,11 @@ npm install
 npm run dev
 ```
 
-## Build Static Output
+## Build
 
 ```bash
 npm run build
 ```
-
-Static files are emitted to `out/`.
 
 ## Content Source of Truth
 
@@ -41,15 +39,20 @@ npm run check:content
 npm run test:e2e
 ```
 
-## Contact Form Endpoint
+## Contact Form Email (Resend)
 
-Set an external endpoint for form submission:
+The contact form posts to the `app/api/contact` route handler, which sends an
+email via [Resend](https://resend.com). Set these server-side environment
+variables (in Vercel project settings, or a local `.env.local`):
 
 ```bash
-NEXT_PUBLIC_CONTACT_ENDPOINT=https://example-form-endpoint
+RESEND_API_KEY=re_xxxxxxxx          # required
+CONTACT_TO_EMAIL=david@tsa-inc.ca   # required — inbox that receives inquiries
+CONTACT_FROM_EMAIL="TSA Inc. <noreply@tsa-inc.ca>"  # optional; defaults to onboarding@resend.dev
 ```
 
-The repo has no backend/API routes.
+`CONTACT_FROM_EMAIL` must use a domain verified in Resend. Until a domain is
+verified, omit it to use Resend's `onboarding@resend.dev` sender.
 
 ## Important
 

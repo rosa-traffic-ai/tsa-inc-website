@@ -37,7 +37,7 @@ export function ContactPanel({ contact }: ContactPanelProps) {
   const [feedback, setFeedback] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const endpoint = process.env.NEXT_PUBLIC_CONTACT_ENDPOINT;
+  const endpoint = `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/api/contact`;
 
   const inputClasses =
     "w-full rounded-xl border border-line bg-paper px-4 py-3 text-sm text-ink outline-none transition placeholder:text-ink/40 focus:border-ink";
@@ -54,11 +54,6 @@ export function ContactPanel({ contact }: ContactPanelProps) {
 
     if (!canSubmit) {
       setError("Please complete all required fields. Message should be at least 20 characters.");
-      return;
-    }
-
-    if (!endpoint) {
-      setError("Contact endpoint is not configured. Add NEXT_PUBLIC_CONTACT_ENDPOINT to your environment.");
       return;
     }
 
@@ -83,7 +78,7 @@ export function ContactPanel({ contact }: ContactPanelProps) {
           role: state.role,
           topic: state.topic,
           message: state.message,
-          source: "tsa-static-site",
+          website: state.companyWebsite,
         }),
       });
 
@@ -206,7 +201,7 @@ export function ContactPanel({ contact }: ContactPanelProps) {
             <Button disabled={!canSubmit || submitting} size="lg" type="submit" variant="primary">
               {submitting ? "Sending..." : contact.submitLabel}
             </Button>
-            <p className="text-xs text-ink/55">Static form delivery via external endpoint.</p>
+            <p className="text-xs text-ink/55">We typically reply within one business day.</p>
           </div>
 
           {feedback ? <p className="mt-4 text-sm text-green-800">{feedback}</p> : null}
